@@ -88,29 +88,32 @@ def makeListForTimetable(list,cpu):
             while i<len(tasks_in_row):
                 check = True
                 for task in tasks_in_row[i]:
-                    print("Is "+str(task.name)+" in "+str(node.name))
+                    #print("Is "+str(task.name)+" in "+str(node.name))
                     if isPrevious(task,node):
-                        print("Yes")
+                        #print("Yes")
                         check = False
                         break
                 if not check or len(tasks_in_row[i])>=cpu:
                     i += 1
                 else:
-                    print("Adding "+str(node.name)+" in column no."+str(i))
+                    #print("Adding "+str(node.name)+" in column no."+str(i))
                     tasks_in_row[i].append(node)
                     i = len(tasks_in_row)
         counter +=1
 
+    tasks_in_row = ([x for x in tasks_in_row if x])
 
-    for col in tasks_in_row:
-        print("\n")
+    '''for col in tasks_in_row:
         for task in col:
             print(task.name,end=" ")
+        print("\n")'''
 
+    for col in range(len(tasks_in_row)):
+        for row in range(len(tasks_in_row[col])):
+            task = tasks_in_row[col][row]
+            jobs.append(dict(Name=task.name, Start=col, Finish=len(tasks_in_row), Row=row+1, Time=1))
 
-        #jobs.append(dict(Name=name, Start=start, Finish=finish, Row=free_space[0], Time=time))
-    
-    return 1
+    return jobs
 
 def isPrevious(n1,n2):
     if n1 == n2:
@@ -138,8 +141,13 @@ for node in ordered_by_label:
     print(node.name, end=" ")
 print("}\n")
 
-#graph.showTimeline(makeListForTimetable(ordered_by_label))
-makeListForTimetable(ordered_by_label,2)
 
-#graph.showGraph([]) 
-#graph.showTimeline(makeListForTimetable(list))      
+list_timetable = makeListForTimetable(ordered_by_label,2)
+
+for i in list_timetable:
+    print(i)
+print("\n")
+
+graph.showGraph([])
+graph.showTimeline(list_timetable)
+       

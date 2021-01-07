@@ -61,7 +61,7 @@ class Graph:
         
         gnt.set_xlim(0, maxX) 
          
-        gnt.set_yticks(range(0,maxRow)) 
+        gnt.set_yticks(range(0,maxRow+1)) 
         gnt.set_xticks(range(0,maxX+1))
 
         gnt.grid(False) 
