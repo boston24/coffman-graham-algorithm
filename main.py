@@ -50,12 +50,17 @@ def start():
             node.s_list = sorted(node.s_list, reverse=True)
 
         print("Iteration no. "+str(iteration))
-        print("Tasks to label: ",end="[ ")
+        print("A = ",end="{ ")
         for task in iteration_list:
             print(task.name, end=" ")
-        print("]")
+        print("}")
 
-        sorted_by_s_list = sorted(iteration_list, key=lambda x: (len(x.s_list),sum(x.s_list)), reverse=True)
+        sorted_by_s_list = sorted(iteration_list, key=lambda x: (len(x.s_list),sum(x.s_list)))
+
+        print("A (sorted) = ",end="{ ")
+        for task in sorted_by_s_list:
+            print(task.name, end=" ")
+        print("}")
 
         for node in sorted_by_s_list:
             node.label = iteration
@@ -71,6 +76,12 @@ def makeListStart():
 
 
 start()
+
+for node in list:
+    print("\nTask: "+str(node.name)+", label="+str(node.label)+", s_list: ",end="[ ")
+    for i in node.s_list:
+        print(i, end=" ")
+    print("]")
 
 #graph = Graph(list)
 #graph.showGraph([]) 
