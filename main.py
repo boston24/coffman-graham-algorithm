@@ -14,28 +14,40 @@ def start():
     iteration_list = []
     iteration_list_temp = []
 
-    while iteration<n:
-            
-        ##if iteration == 4:
-        ##    iteration = n
-
-        iteration_list_temp = iteration_list
-        iteration_list = []
+    while iteration<=n:
 
         if iteration == 1: 
             iteration_list = makeListStart()
-
         else:
-            for node in iteration_list_temp:
-                for kid in node.kids:
-                    check = 1
-                    for parent in kid.parents:
-                        if parent.label == None:
-                            check = 0
-                    if check == 1:
-                        iteration_list.append(kid)
+            print("--------------------------------------------")
+            iteration_list_temp = []
+            
+            for node in iteration_list:
+                for parent in node.parents:
+                    if parent not in iteration_list_temp:
+                        iteration_list_temp.append(parent)
+            
+            iteration_list = []
+            
+            '''
+            print("Temporary iteration list: ",end="[ ")
+            for task in iteration_list_temp:
+                print(task.name, end=" ")
+            print("]")'''
 
-        iteration_list = sorted(iteration_list, key=lambda x: x.name)
+            for node in iteration_list_temp:
+                check = 1
+                for kid in node.kids:
+                    if kid.label == None:
+                        check = 0
+                    else:
+                        if kid.label not in node.s_list:
+                            node.s_list.append(kid.label)
+                if check == 1:
+                    iteration_list.append(node)
+        
+        for node in iteration_list:
+            node.s_list = sorted(node.s_list, reverse=True)
 
         print("Iteration no. "+str(iteration))
         print("Tasks to label: ",end="[ ")
@@ -43,7 +55,9 @@ def start():
             print(task.name, end=" ")
         print("]")
 
-        for node in iteration_list:
+        sorted_by_s_list = sorted(iteration_list, key=lambda x: (len(x.s_list),sum(x.s_list)), reverse=True)
+
+        for node in sorted_by_s_list:
             node.label = iteration
             print("Set label of "+str(node.name)+" with "+str(iteration))
             iteration += 1
@@ -54,6 +68,7 @@ def makeListStart():
         if not node.kids:
             out.append(node) 
     return out
+
 
 start()
 
