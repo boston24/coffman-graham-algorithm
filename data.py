@@ -63,4 +63,4 @@ list.append(z17)
 list.append(z18)
 list.append(z19)
 
-graph = Graph(list)
+#graph = Graph(list)
