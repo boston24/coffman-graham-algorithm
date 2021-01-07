@@ -74,8 +74,56 @@ def makeListStart():
             out.append(node) 
     return out
 
+def makeListForTimetable(list,cpu):
+    jobs = []
+    tasks_in_row = [[] for _ in range(len(list))]
+
+    counter = 0
+
+    for node in list:
+        if counter == 0:
+            tasks_in_row[0].append(node)
+        else:           
+            i=0
+            while i<len(tasks_in_row):
+                check = True
+                for task in tasks_in_row[i]:
+                    print("Is "+str(task.name)+" in "+str(node.name))
+                    if isPrevious(task,node):
+                        print("Yes")
+                        check = False
+                        break
+                if not check or len(tasks_in_row[i])>=cpu:
+                    i += 1
+                else:
+                    print("Adding "+str(node.name)+" in column no."+str(i))
+                    tasks_in_row[i].append(node)
+                    i = len(tasks_in_row)
+        counter +=1
+
+
+    for col in tasks_in_row:
+        print("\n")
+        for task in col:
+            print(task.name,end=" ")
+
+
+        #jobs.append(dict(Name=name, Start=start, Finish=finish, Row=free_space[0], Time=time))
+    
+    return 1
+
+def isPrevious(n1,n2):
+    if n1 == n2:
+        return True
+    else:
+        for parent in n2.parents:
+            if isPrevious(n1,parent):
+                return True
+
 
 start()
+graph = Graph(list)
+
 
 for node in list:
     print("\nTask: "+str(node.name)+", label="+str(node.label)+", s_list: ",end="[ ")
@@ -83,6 +131,15 @@ for node in list:
         print(i, end=" ")
     print("]")
 
-#graph = Graph(list)
+ordered_by_label = []
+ordered_by_label = sorted(list, key=lambda x : x.label, reverse=True)
+print("\nOrdered by label = ", end="{ ")
+for node in ordered_by_label:
+    print(node.name, end=" ")
+print("}\n")
+
+#graph.showTimeline(makeListForTimetable(ordered_by_label))
+makeListForTimetable(ordered_by_label,2)
+
 #graph.showGraph([]) 
 #graph.showTimeline(makeListForTimetable(list))      
