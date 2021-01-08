@@ -112,7 +112,7 @@ def makeListForTimetable(list,cpu):
     for col in range(len(tasks_in_row)):
         for row in range(len(tasks_in_row[col])):
             task = tasks_in_row[col][row]
-            jobs.append(dict(Name=task.name, Start=col, Finish=len(tasks_in_row), Row=row+1, Time=1))
+            jobs.append(dict(Name=task.name, Start=col, Finish=len(tasks_in_row), Row=row+1, Time=1, Label=task.label))
 
     return jobs
 
